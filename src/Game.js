@@ -1,66 +1,81 @@
-class Game {
-  constructor(player1, player2) {
-    this.player1 = player1;
-    this.player2 = player2;
-    this.currentPlayer = player1;
-    this.gameStarted = false;
-  }
+import Player from './Player';
+const DOM = require('./DOM');
+import Ship from './Ship';
 
-  start() {
-    this.gameStarted = true;
-  }
+const Game = (() => {
+    let player;
+    let computer;
+    let currentPlayer;
 
-  placeShip(player, ship, row, col, orientation) {
-    if (this.gameStarted) {
-      throw new Error('Cannot place ships after game has started');
+    function init() {
+        player = new Player('human');
+        computer = new Player('computer');
+        currentPlayer = player;
+
+        // Pre-place ships for both players
+        player.gameboard.placeShip(new Ship(5), [0, 0], 'horizontal');
+        player.gameboard.placeShip(new Ship(4), [2, 0], 'horizontal');
+        player.gameboard.placeShip(new Ship(3), [4, 0], 'horizontal');
+        player.gameboard.placeShip(new Ship(3), [6, 0], 'horizontal');
+        player.gameboard.placeShip(new Ship(2), [8, 0], 'horizontal');
+
+        computer.gameboard.placeShip(new Ship(5), [0, 0], 'horizontal');
+        computer.gameboard.placeShip(new Ship(4), [2, 0], 'horizontal');
+        computer.gameboard.placeShip(new Ship(3), [4, 0], 'horizontal');
+        computer.gameboard.placeShip(new Ship(3), [6, 0], 'horizontal');
+        computer.gameboard.placeShip(new Ship(2), [8, 0], 'horizontal');
+
+        DOM.renderBoard(player.gameboard, 'player-board', true);
+        DOM.renderBoard(computer.gameboard, 'computer-board');
+        addEventListeners();
     }
-    return player.placeShip(ship, row, col, orientation);
-  }
 
-  playTurn(row, col) {
-    if (!this.gameStarted) {
-      throw new Error('Game has not started yet');
+    function addEventListeners() {
+        const computerBoardElement = document.getElementById('computer-board');
+        computerBoardElement.addEventListener('click', handlePlayerAttack);
     }
 
-    const attackingPlayer = this.currentPlayer;
-    const defendingPlayer = this.currentPlayer === this.player1 ? this.player2 : this.player1;
+    function handlePlayerAttack(event) {
+        const x = parseInt(event.target.dataset.x, 10);
+        const y = parseInt(event.target.dataset.y, 10);
 
-    let hit;
-    if ('generateRandomAttack' in attackingPlayer) {
-      // AI player
-      hit = attackingPlayer.attack(defendingPlayer.board);
-    } else {
-      // Human player
-      hit = attackingPlayer.attack(defendingPlayer.board, row, col);
+        if (isNaN(x) || isNaN(y)) return;
+
+        if (currentPlayer === player) {
+            player.attack(computer.gameboard, [x, y]);
+            DOM.renderBoard(computer.gameboard, 'computer-board');
+            checkGameOver();
+            currentPlayer = computer;
+            handleComputerTurn();
+        }
     }
-    this.switchTurn();
 
-    return hit;
-  }
-
-  isValidAttack(attackingPlayer, defendingPlayer, row, col) {
-    if (!defendingPlayer || !defendingPlayer.board) {
-      return false;
+    function handleComputerTurn() {
+        if (currentPlayer === computer) {
+            computer.randomAttack(player.gameboard);
+            DOM.renderBoard(player.gameboard, 'player-board', true);
+            checkGameOver();
+            currentPlayer = player;
+        }
     }
-    const boardSize = defendingPlayer.board.size || 10; // Assuming default size of 10 if not specified
-    return attackingPlayer !== defendingPlayer && 
-           row >= 0 && row < boardSize &&
-           col >= 0 && col < boardSize;
-  }
 
-  switchTurn() {
-    this.currentPlayer = this.currentPlayer === this.player1 ? this.player2 : this.player1;
-  }
+    function checkGameOver() {
+        if (computer.gameboard.areAllShipsSunk()) {
+            alert('Player wins!');
+            resetGame();
+        } else if (player.gameboard.areAllShipsSunk()) {
+            alert('Computer wins!');
+            resetGame();
+        }
+    }
 
-  isGameOver() {
-    return this.player1.hasLost() || this.player2.hasLost();
-  }
+    function resetGame() {
+        document.location.reload();
+    }
 
-  getWinner() {
-    if (this.player1.hasLost()) return this.player2;
-    if (this.player2.hasLost()) return this.player1;
-    return null;
-  }
-}
+    return {
+        init,
+    };
+})();
 
 export default Game;

@@ -5,12 +5,13 @@ class Ship {
   }
 
   hit() {
-    this.hits++;
+      this.hits += 1;
   }
 
   isSunk() {
-    return this.hits >= this.length;
+      return this.hits >= this.length;
   }
+
 }
 
 export default Ship;
