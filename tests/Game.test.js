@@ -79,18 +79,21 @@ describe('Game', () => {
 
 
   test('should not allow player to attack own board', () => {
+    game = new Game(player1, player2); 
     game.start();
     const result = game.isValidAttack(player1, player1, 0, 0);
     expect(result).toBe(false);
   });
 
   test('should allow player to attack opponent board', () => {
+    game = new Game(player1, player2);
     game.start();
     const result = game.isValidAttack(player1, player2, 0, 0);
     expect(result).toBe(true);
   });
 
   test('should not allow attacks outside the board', () => {
+    game = new Game(player1, player2);
     game.start();
     expect(game.isValidAttack(player1, player2, -1, 0)).toBe(false);
     expect(game.isValidAttack(player1, player2, 0, -1)).toBe(false);
@@ -109,6 +112,7 @@ describe('Game', () => {
   });
 
   test('should place ships for both players before game starts', () => {
+    game = new Game(player1, player2);
     const ship1 = new Ship(3);
     const ship2 = new Ship(4);
     game.placeShip(player1, ship1, 0, 0, 'horizontal');
@@ -118,6 +122,7 @@ describe('Game', () => {
   });
 
   test('should not allow placing ships after game starts', () => {
+    game = new Game(player1, player2);
     game.start();
     const ship = new Ship(3);
     expect(() => game.placeShip(player1, ship, 0, 0, 'horizontal')).toThrow('Cannot place ships after game has started');
@@ -129,6 +134,7 @@ describe('Game', () => {
   });
 
   test('should allow turns after game starts', () => {
+    game = new Game(player1, player2);
     game.start();
     player1.attack = jest.fn();
     expect(() => game.playTurn(0, 0)).not.toThrow();
