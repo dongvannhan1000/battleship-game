@@ -2,9 +2,25 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Battleship</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battleship Game</title>
 </head>
 <body>
-    <div id="game-container"></div>
+    <div id="game-container">
+        <h1>Battleship</h1>
+        <div id="boards-container">
+            <div id="player-board" class="board">
+                <h2>Your Board</h2>
+                <div id="player-ships"></div>
+                <div class="grid"></div>
+            </div>
+            <div id="computer-board" class="board">
+                <h2>Computer's Board</h2>
+                <div id="computer-ships"></div>
+                <div class="grid"></div>
+            </div>
+        </div>
+        <div id="message"></div>
+    </div>
 </body>
 </html>
