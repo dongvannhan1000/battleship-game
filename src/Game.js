@@ -25,14 +25,27 @@ class Game {
     const attackingPlayer = this.currentPlayer;
     const defendingPlayer = this.currentPlayer === this.player1 ? this.player2 : this.player1;
 
-    if (defendingPlayer.board === attackingPlayer.board) {
-      throw new Error('Cannot attack your own board');
+    let hit;
+    if ('generateRandomAttack' in attackingPlayer) {
+      // AI player
+      hit = attackingPlayer.attack(defendingPlayer.board);
+    } else {
+      // Human player
+      hit = attackingPlayer.attack(defendingPlayer.board, row, col);
     }
-
-    const hit = attackingPlayer.attack(defendingPlayer.board, row, col);
     this.switchTurn();
 
     return hit;
+  }
+
+  isValidAttack(attackingPlayer, defendingPlayer, row, col) {
+    if (!defendingPlayer || !defendingPlayer.board) {
+      return false;
+    }
+    const boardSize = defendingPlayer.board.size || 10; // Assuming default size of 10 if not specified
+    return attackingPlayer !== defendingPlayer && 
+           row >= 0 && row < boardSize &&
+           col >= 0 && col < boardSize;
   }
 
   switchTurn() {

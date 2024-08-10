@@ -8,15 +8,7 @@ class Board {
 
   placeShip(ship, row, col, orientation) {
     if (this.isPlacementValid(ship, row, col, orientation)) {
-      if (orientation === 'horizontal') {
-        for (let i = 0; i < ship.length; i++) {
-          this.grid[row][col + i] = ship;
-        }
-      } else {
-        for (let i = 0; i < ship.length; i++) {
-          this.grid[row + i][col] = ship;
-        }
-      }
+      this.placeShipOnGrid(ship, row, col, orientation);
       this.ships.push(ship);
       return true;
     }
@@ -24,18 +16,36 @@ class Board {
   }
 
   isPlacementValid(ship, row, col, orientation) {
-    if (orientation === 'horizontal') {
-      if (col + ship.length > this.size) return false;
-      for (let i = 0; i < ship.length; i++) {
-        if (this.grid[row][col + i] !== null) return false;
-      }
-    } else {
-      if (row + ship.length > this.size) return false;
-      for (let i = 0; i < ship.length; i++) {
-        if (this.grid[row + i][col] !== null) return false;
-      }
+    return orientation === 'horizontal'
+      ? this.isHorizontalPlacementValid(ship, row, col)
+      : this.isVerticalPlacementValid(ship, row, col);
+  }
+
+  isHorizontalPlacementValid(ship, row, col) {
+    if (col + ship.length > this.size) return false;
+    return this.isAreaClear(row, col, ship.length, 'horizontal');
+  }
+
+  isVerticalPlacementValid(ship, row, col) {
+    if (row + ship.length > this.size) return false;
+    return this.isAreaClear(row, col, ship.length, 'vertical');
+  }
+
+  isAreaClear(row, col, length, orientation) {
+    for (let i = 0; i < length; i++) {
+      const cellRow = orientation === 'horizontal' ? row : row + i;
+      const cellCol = orientation === 'horizontal' ? col + i : col;
+      if (this.grid[cellRow][cellCol] !== null) return false;
     }
     return true;
+  }
+
+  placeShipOnGrid(ship, row, col, orientation) {
+    for (let i = 0; i < ship.length; i++) {
+      const cellRow = orientation === 'horizontal' ? row : row + i;
+      const cellCol = orientation === 'horizontal' ? col + i : col;
+      this.grid[cellRow][cellCol] = ship;
+    }
   }
 
   receiveAttack(row, col) {
