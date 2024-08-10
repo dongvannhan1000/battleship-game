@@ -1,24 +1,26 @@
-import { Ship } from '../src/game/Ship';
+import Ship from '../src/models/Ship';
 
 describe('Ship', () => {
-  test('should be created with the correct length', () => {
-    const ship = new Ship(3);
+  let ship;
+
+  beforeEach(() => {
+    ship = new Ship(3); // Tạo một tàu có độ dài 3
+  });
+
+  test('should create a ship with the correct length', () => {
     expect(ship.length).toBe(3);
   });
 
   test('should not be sunk when created', () => {
-    const ship = new Ship(3);
     expect(ship.isSunk()).toBe(false);
   });
 
-  test('should be hit when hit() is called', () => {
-    const ship = new Ship(3);
+  test('should register hits', () => {
     ship.hit();
     expect(ship.hits).toBe(1);
   });
 
   test('should be sunk when hit enough times', () => {
-    const ship = new Ship(3);
     ship.hit();
     ship.hit();
     ship.hit();
