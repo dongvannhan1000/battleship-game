@@ -14,45 +14,7 @@ class Display {
         this.dragEndHandler = this.dragEndHandler.bind(this);
         this.dragEnterHandler = this.dragEnterHandler.bind(this);
     }
-    displayBoardPlayer() {
-        const board = this.player.gameBoard.board;
-        // const board = gameBoard.board
-        const boardDiv = document.querySelector(`.board.player`);
-        boardDiv.innerHTML = "";
-        for (let i = 0; i < board.length; i++) {
-            for (let j = 0; j < board[i].length; j++) {
-                const cell = document.createElement("div");
-                cell.classList.add("cell");
-                cell.dataset.x = i;
-                cell.dataset.y = j;
-                cell.addEventListener("dragenter", this.dragEnterHandler);
-                cell.addEventListener("dragover", this.dragOverHandler);
-                cell.addEventListener("drop", this.dropHandler);
-                if (board[i][j].hit) {
-                    cell.classList.add("hit");
-                }
-                if (board[i][j].ship) {
-                    cell.classList.add("ship");
-                    if (board[i][j].ship.isSunk) {
-                        cell.classList.add("sunk");
-                    }
-                    if (document.body.classList.contains("starting-screen")) {
-                        cell.classList.add("movable");
-                        cell.draggable = true;
-                        cell.addEventListener(
-                            "dragstart",
-                            this.dragStartHandler
-                        );
-                        cell.addEventListener("dragend", this.dragEndHandler);
-                    }
-                } else {
-                    cell.classList.add("water");
-                }
-
-                boardDiv.appendChild(cell);
-            }
-        }
-    }
+    
 
     dragStartHandler(e) {
         e.target.classList.add("dragging");
@@ -203,6 +165,46 @@ class Display {
         }
     }
 
+    displayBoardPlayer() {
+      const board = this.player.gameBoard.board;
+      // const board = gameBoard.board
+      const boardDiv = document.querySelector(`.board.player`);
+      boardDiv.innerHTML = "";
+      for (let i = 0; i < board.length; i++) {
+          for (let j = 0; j < board[i].length; j++) {
+              const cell = document.createElement("div");
+              cell.classList.add("cell");
+              cell.dataset.x = i;
+              cell.dataset.y = j;
+              cell.addEventListener("dragenter", this.dragEnterHandler);
+              cell.addEventListener("dragover", this.dragOverHandler);
+              cell.addEventListener("drop", this.dropHandler);
+              if (board[i][j].hit) {
+                  cell.classList.add("hit");
+              }
+              if (board[i][j].ship) {
+                  cell.classList.add("ship");
+                  if (board[i][j].ship.isSunk) {
+                      cell.classList.add("sunk");
+                  }
+                  if (document.body.classList.contains("starting-screen")) {
+                      cell.classList.add("movable");
+                      cell.draggable = true;
+                      cell.addEventListener(
+                          "dragstart",
+                          this.dragStartHandler
+                      );
+                      cell.addEventListener("dragend", this.dragEndHandler);
+                  }
+              } else {
+                  cell.classList.add("water");
+              }
+
+              boardDiv.appendChild(cell);
+          }
+      }
+    }
+    
     displayBoardComputer() {
         const board = this.computer.gameBoard.board;
         // const board = gameBoard.board;

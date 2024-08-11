@@ -24,7 +24,7 @@ class GameBoard {
 
         this.ships.push(ship);
         ship.direction = direction;
-        ship.coordinates = { x, y };
+        // ship.coordinates = { x, y };
         // console.log(x, y, direction, ship);
         switch (direction) {
             case "horizontal":

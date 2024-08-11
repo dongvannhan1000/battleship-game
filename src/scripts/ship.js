@@ -4,7 +4,7 @@ class Ship {
       this.timesHit = 0;
       this.hits = [];
       this.isSunk = false;
-      this.coordinates = null;
+    //   this.coordinates = null;
       this.direction = null;
   }
 
@@ -17,9 +17,6 @@ class Ship {
       if (this.determineIfSunk()) this.isSunk = true;
   }
 
-  isHit(x, y) {
-      return this.hits.some((hit) => hit.x === x && hit.y === y);
-  }
 
   determineIfSunk() {
       if (this.timesHit === this.length) {
