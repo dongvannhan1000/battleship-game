@@ -1,10 +1,19 @@
-import "./reset.css";
 import "./styles.css";
 import Player from "./scripts/player";
 import Display from "./scripts/display";
 
-const player = new Player("player");
-const computer = new Player("computer");
-const display = new Display(player, computer);
+const BattleshipGame = (function() {
+    function init() {
+        const player = new Player("human");
+        const computer = new Player("computer");
+        const display = new Display(player, computer);
 
-display.startingScreen();
+        display.startingScreen();
+    }
+
+    return {
+        init: init
+    };
+})();
+
+document.addEventListener('DOMContentLoaded', BattleshipGame.init);

@@ -42,13 +42,13 @@ class GameBoard {
         }
     }
 
-    canReceiveAttack(x, y) {
-        return !this.board[x][y].hit;
-    }
+    // canReceiveAttack(x, y) {
+    //     return !this.board[x][y].hit;
+    // }
 
     receiveAttack(x, y) {
-        if (!this.canReceiveAttack(x, y))
-            throw new Error("Spot is already hit");
+        // if (!this.canReceiveAttack(x, y))
+        //     throw new Error("Spot is already hit");
         this.board[x][y].hit = true;
         if (this.board[x][y].ship) {
             this.board[x][y].ship.hit(x, y);
