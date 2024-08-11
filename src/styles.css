@@ -91,7 +91,7 @@ body {
 }
 
 .cell.water.hit {
-  background-image: url("./icons/sea.png");
+  background-color: blue;
   background-size: 120%;
   background-position: 0 10px;
   background-repeat: no-repeat;
@@ -99,7 +99,7 @@ body {
 
 .cell.ship.hit {
   border: 2px solid rgb(0, 67, 0);
-  background: url("./icons/fire.png"), greenyellow;
+  background-color: red;
   background-size: 80%;
   background-position: center;
   background-repeat: no-repeat;

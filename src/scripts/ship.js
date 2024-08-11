@@ -28,31 +28,6 @@ class Ship {
       return false;
   }
 
-  getShipDataJSON() {
-      return JSON.stringify({
-          coordinates: this.coordinates,
-          direction: this.direction,
-          length: this.length,
-          allCellCoordinates: this.getAllCellCoordinates(),
-      });
-  }
-
-  getAllCellCoordinates() {
-      const coordinates = [];
-      switch (this.direction) {
-          case "horizontal":
-              for (let i = 0; i < this.length; i++) {
-                  coordinates.push([this.coordinates.x, this.coordinates.y + i]);
-              }
-              break;
-          case "vertical":
-              for (let i = 0; i < this.length; i++) {
-                  coordinates.push([this.coordinates.x + i, this.coordinates.y]);
-              }
-              break;
-      }
-      return coordinates;
-  }
 }
 
 export default Ship;
